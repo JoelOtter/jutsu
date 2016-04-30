@@ -1,0 +1,139 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF8">
+        <link rel="stylesheet" href="http://www.joelotter.com/kajero/dist/main.css">
+    </head>
+    <body>
+        <script type="text/markdown" id="kajero-md">
+            ---
+            title: Jutsu
+            author: Joel Auterson
+            created: Sat Apr 30 2016 14:56:02 GMT+0100 (BST)
+            datasources:
+                github: https://api.github.com/search/repositories?q=created:>2010-01-01&sort=stars&order=desc
+            original:
+                title: Blank Kajero notebook
+                url: http://www.joelotter.com/kajero/blank
+            show_footer: true
+            ---
+
+            **Jutsu** is a very simple graphing library for the web, with support for [Smolder](https://github.com/JoelOtter/smolder) built in.
+
+            This means it can attempt to handle any data that's thrown at it, regardless of structure, and produce a graph.
+
+            This document is a [Kajero](http://www.joelotter.com/kajero) notebook, so any code samples with a play button are interactive. You can edit everything, too, by clicking the pencil button in the top right.
+
+            ## Installation
+
+            ```
+            npm install jutsu
+            ```
+
+            ## Usage
+
+            Jutsu can function just fine on its own, but you'll really want to use it with Smolder to get the automatic data reshaping.
+
+            ```
+            npm install smolder
+            ```
+
+            ```js
+            var Smolder = require('smolder');
+            var Jutsu = require('jutsu');
+
+            // graphElement is the DOM element where we want to put the graphs.
+            var graphs = Smolder(Jutsu(graphElement));
+            ```
+
+            Once we've initialised Jutsu and told it where to draw, we can create a graph in just one line.
+
+            This notebook has the most popular GitHub repos since 2010 as a data source. You can view it if you run this code:
+
+
+            ```javascript
+            return data.github;
+            ```
+
+            You can edit the data URL in the editor if you like. For now, let's see what graphs we can make from this data.
+
+            ## Pie chart
+
+            #### pieChart(data);
+
+            A pie chart needs numbers for the data itself, and strings for the labels. Jutsu can extract these automatically. Try running the code below.
+
+            ```javascript
+            return graphs.pieChart(data.github);
+            ```
+
+            Jutsu has made us a pie chart out of the data we provided. However, it doesn't know which parts of the data we're interested in, so it's just used the first appropriate ones it found. If you look at what the code returns, you can see the data after it's been reshaped.
+
+            We can tell Jutsu what we're interested in by providing it with _hints_. These are optional strings which refer to the parts of the data we'd like our graphs to use. Let's use the name of the repository (much more readable!) and the number of stargazers.
+
+            ```javascript
+            return graphs.pieChart(data.github, ['name', 'stargazers_count']);
+            ```
+
+            This is much more useful.
+
+            ## Bar chart
+
+            #### barChart(data, xLabel, yLabel);
+
+            It's a little hard to see the difference between the stargazers on the pie chart. Let's try a bar chart instead.
+
+            We can add labels to the axes on our bar chart, to make sure it's easy to understand.
+
+            ```javascript
+            return graphs.barChart(data.github, 'Repo', 'Stargazers', ['name', 'stargazers_count']);
+            ```
+
+            Again, we can add hints. The hints are always the final, optional argument in a Jutsu function.
+
+            ## Line chart
+
+            #### lineChart(data, xLabel, yLabel);
+
+            If we want to investigate the relationship between two values, a bar chart isn't going to cut it. Let's make a line chart to try and answer the question - is there a relationship between the number of stargazers, and the number of open issues, that a repository has?
+
+            ```javascript
+            return graphs.lineChart(
+                data.github.items, 'Stargazers', 'Open issues',
+                ['stargazers_count', 'open_issues_count', 'name']
+            );
+            ```
+
+            The line chart needs an additional hint, for a string to use as the point label.
+
+            If all the data we're interested in is inside one subtree of the data, passing this subtree to Jutsu makes it easier for it to choose the correct data. In the GitHub data, everything we're concerned with is inside the **items** array, so it makes sense to just pass this.
+
+            The graph is very jagged and it's hard to see if there's a relationship between the two! Thankfully, there's another graph which is very good for observing correlations - a scatter plot.
+
+            ## Scatter plot
+
+            #### scatterPlot(data, xLabel, yLabel);
+
+            The code for a scatter plot is nearly identical to a line chart.
+
+            ```javascript
+            return graphs.scatterPlot(
+                data.github.items, 'Stargazers', 'Open issues',
+                ['stargazers_count', 'open_issues_count', 'name']
+            );
+            ```
+
+            This is a bit more readable - we can see that there might be a slight positive correlation between stargazers and open issues, though there are lots of outliers too.
+
+            ## Questions? Feedback?
+
+            Please feel free to file an [issue](https://github.com/JoelOtter/jutsu/issues) with any you may have. If you're having a problem with the way Jutsu restructures your data, it's probably better to file an issue in [Reshaper](https://github.com/JoelOtter/reshaper), the library that does all the hard work.
+
+            Jutsu is a part of my Master's project at Imperial College London, and as part of my evaluation I'd really love to hear any feedback you might have. Feel free to [shoot me an email](mailto:joel.auterson@gmail.com).
+
+            I hope you find Jutsu useful!
+        </script>
+        <div id="kajero"></div>
+        <script type="text/javascript" src="http://www.joelotter.com/kajero/dist/bundle.js"></script>
+    </body>
+</html>
