@@ -67,7 +67,7 @@
             This notebook has the most popular GitHub repos since 2010 as a data source. You can view it if you run this code:
 
 
-            ```javascript
+            ```javascript; runnable
             return data.github;
             ```
 
@@ -79,7 +79,7 @@
 
             A pie chart needs numbers for the data itself, and strings for the labels. Jutsu can extract these automatically. Try running the code below.
 
-            ```javascript
+            ```javascript; runnable
             return graphs.pieChart(data.github);
             ```
 
@@ -87,7 +87,7 @@
 
             We can tell Jutsu what we're interested in by providing it with _hints_. These are optional strings which refer to the parts of the data we'd like our graphs to use. Let's use the name of the repository (much more readable!) and the number of stargazers.
 
-            ```javascript
+            ```javascript; runnable
             return graphs.pieChart(data.github, ['name', 'stargazers_count']);
             ```
 
@@ -101,7 +101,7 @@
 
             We can add labels to the axes on our bar chart, to make sure it's easy to understand.
 
-            ```javascript
+            ```javascript; runnable
             return graphs.barChart(data.github, 'Repo', 'Stargazers', ['name', 'stargazers_count']);
             ```
 
@@ -113,7 +113,7 @@
 
             If we want to investigate the relationship between two values, a bar chart isn't going to cut it. Let's make a line chart to try and answer the question - is there a relationship between the number of stargazers, and the number of open issues, that a repository has?
 
-            ```javascript
+            ```javascript; runnable
             return graphs.lineChart(
                 data.github.items, 'Stargazers', 'Open issues',
                 ['stargazers_count', 'open_issues_count', 'name']
@@ -132,7 +132,7 @@
 
             The code for a scatter plot is nearly identical to a line chart.
 
-            ```javascript
+            ```javascript; runnable
             return graphs.scatterPlot(
                 data.github.items, 'Stargazers', 'Open issues',
                 ['stargazers_count', 'open_issues_count', 'name']
