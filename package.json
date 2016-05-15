@@ -1,6 +1,6 @@
 {
   "name": "jutsu",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "One-line graphs with Smolder support",
   "main": "./lib/jutsu.js",
   "scripts": {
